@@ -1,37 +1,42 @@
 #encoding=utf-8
+from logging import warning
 import traceback
-from typing import Any
+from typing import Any, Union
 import colorama
 colorama.init(autoreset=True)
 
 from .EasyErrCode import EasyErrCode
-
 class EasyErrHandler:
     """
-    A class that can help you to handle errors easily
+    A class that can help you to handle errors easily.
     """
     def __init__(self,show_detail:str="all",autoUpdate=True):
         self.show_detail=show_detail
         self.autoUpdate=autoUpdate
         self.errColor=colorama.Fore.RED
+        try:
+            import pprint
+        except:
+            warning("pprint unavailable")
+
 
     def output(self,content:str)->Any:
-        return print(content)
+        return print(f"{content}")
 
-    def errCatchDecorator(self,show_detail:str=None,errCodeObj:object=None,changeErrObj=None,errReturn=None):
+    def catcher(self,show_detail:str=None,errCodeObj:object=None,changeErrObj=None,errReturn:Union[None,Any,Exception]=None):
         """
         A decorator to catch errors and show traceback without interrupt whole program.
         Example:
             import EasyErrorHandler as eeh
             myErrorCodes=eeh.EasyErrCode()
-            myErrorHandler=eeh.EasyErrHandler()
+            handler=eeh.EasyErrHandler()
 
-            @myErrorHandler.errCatchDecorator()
+            @handler.catcher(errReturn=0x3f3f3f3f)
             def a(x):
                 return 3/x
-
-            print(a(1))
-            print(a(0))
+            
+            print(a(1)-1)
+            print(a(0)-1)
             print("Program can still run.")
         """
         if show_detail == None:
@@ -40,8 +45,6 @@ class EasyErrHandler:
             changeErrObj=self.autoUpdate
         if errCodeObj==None:
             errCodeObj=EasyErrCode()
-        if type(errCodeObj) != EasyErrCode:
-            raise TypeError("type of parameter errCodeObj should be None or EasyErrCode, if you want to use wustom error code management class, please override EasyErrCode")
         if show_detail not in ["all","simple","none"]:
             raise ValueError("parameter show_detail should be in ['all','simple','none']")
         def decorator(func):
@@ -65,7 +68,10 @@ class EasyErrHandler:
                             code=e,
                             msg="{}An error happened in the function!".format(self.errColor),
                             replace=changeErrObj)['res'].get(e)['res'])
-                    return errReturn
+                    if issubclass(type(errReturn),BaseException):
+                        raise errReturn
+                    else:
+                        return errReturn
 
                 else:
                     return res

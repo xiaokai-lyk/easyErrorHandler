@@ -1,21 +1,29 @@
 #encoding=utf-8
-class EasyErrAnalyser:
+from dataclasses import dataclass
+
+
+
+@dataclass
+class DataStorer:
+    pass
+class EasyAnalyser():
     """
-    Record errors and help developers to analyse them.
+    Record errors and shortcomings and help developers to analyse them.
     Functions:
     Generate better trace back using a tree structure
     Collect data from EasyErrHandler
     """
-    def __init__(self,source:dict={},locked:bool=False) -> None:
-        self.locked=locked
-
+    def __init__(self,data:dict={},settings:dict={}) -> None:
+        self.data = data
+        self.settings = settings
+        
     def __str__(self) -> str:
         pass
     
-    def __hash__(self) -> int:...
-        #Î´Íê³É£¡
+    def __hash__(self) -> int:
+        return hash([self.data,self.settings])
     def __call__(self) -> str:...
-        #ÏÔÊ¾´íÎó×·×ÙÐÅÏ¢
+        #æ˜¾ç¤ºé”™è¯¯ç»Ÿè®¡ä¿¡æ¯
 
     def load(self,source:dict,replace:bool=False) -> bool:
         if replace and self.locked==False :
@@ -26,6 +34,6 @@ class EasyErrAnalyser:
         if type(self)==type(value):
             return hash(self)==hash(value)
         elif type(value)==dict:
-            return hash(self)==hash(EasyErrAnalyser(value))
+            return hash(self)==hash(EasyAnalyser(value))
         else:
             return False

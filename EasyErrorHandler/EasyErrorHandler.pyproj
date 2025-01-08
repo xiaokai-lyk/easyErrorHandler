@@ -5,13 +5,14 @@
     <ProjectGuid>080c4e6f-4a4d-4a93-be68-c05abaf998b3</ProjectGuid>
     <ProjectHome>
     </ProjectHome>
-    <StartupFile>__init__.py</StartupFile>
+    <StartupFile>UI.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <Name>EasyErrorHandler</Name>
     <RootNamespace>EasyErrorHandler</RootNamespace>
+    <InterpreterId>CondaEnv|CondaEnv|EasyError</InterpreterId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -22,11 +23,15 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="EasyErrAnalyser.py" />
+    <Compile Include="EasyAnalyser.py" />
     <Compile Include="EasyErrCode.py" />
     <Compile Include="EasyErrHandler.py" />
-    <Compile Include="structure.py" />
+    <Compile Include="UI.py" />
+    <Compile Include="utils.py" />
     <Compile Include="__init__.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <InterpreterReference Include="CondaEnv|CondaEnv|EasyError" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
